@@ -48,7 +48,7 @@ export const actions = {
       })
   },
   fetchEvents({ commit, dispatch }, { perPage, page }) {
-    EventService.getEvents(perPage, page)
+    return EventService.getEvents(perPage, page)
       .then(res => {
         commit('SET_EVENTS', res.data)
         commit('SET_TOTAL_EVENTS', res.headers['x-total-count'])
@@ -65,10 +65,12 @@ export const actions = {
     var event = getters.getEventById(id)
     if (event) {
       commit('SET_EVENT', event)
+      return event
     } else {
-      EventService.getEvent(id)
+      return EventService.getEvent(id)
         .then(res => {
           commit('SET_EVENT', res.data)
+          return res.data
         })
         .catch(err => {
           const notification = {

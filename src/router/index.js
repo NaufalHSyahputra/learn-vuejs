@@ -5,13 +5,15 @@ import EventShow from '../views/EventShow'
 import EventCreate from '../views/EventCreate'
 import NProgress from 'nprogress'
 import store from '../store'
+import NotFound from '../views/NotFound.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'event-list',
-    component: EventList
+    component: EventList,
+    props: true
   },
   {
     path: '/event/:id',
@@ -19,16 +21,29 @@ const routes = [
     component: EventShow,
     props: true,
     beforeEnter(routeTo, routeFrom, next) {
-      store.dispatch('event/fetchEvent', routeTo.params.id).then(event => {
-        routeTo.params.event = event
-        next()
-      })
+      store
+        .dispatch('event/fetchEvent', routeTo.params.id)
+        .then(event => {
+          routeTo.params.event = event
+          next()
+        })
+        .catch(() => next({ name: '404', params: { resource: 'event' } }))
     }
   },
   {
     path: '/event/create',
     name: 'event-create',
     component: EventCreate
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: NotFound,
+    props: true
+  },
+  {
+    path: '*',
+    redirect: { name: '404', params: { reource: 'page' } }
   }
 ]
 

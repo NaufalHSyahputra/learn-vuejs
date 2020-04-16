@@ -249,6 +249,24 @@
       "date": "2020-04-02T09:36:00.000Z",
       "time": "2:00",
       "attendees": []
+    },
+    {
+      "id": 5551298,
+      "user": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "category": "animal welfare",
+      "organizer": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "title": "Puppy Pinic",
+      "description": "",
+      "location": "",
+      "date": "",
+      "time": "",
+      "attendees": []
     }
   ]
 }

@@ -6,6 +6,7 @@ import EventCreate from '../views/EventCreate'
 import NProgress from 'nprogress'
 import store from '../store'
 import NotFound from '../views/NotFound.vue'
+import NetworkIssue from '../views/NetworkIssue.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -27,7 +28,13 @@ const routes = [
           routeTo.params.event = event
           next()
         })
-        .catch(() => next({ name: '404', params: { resource: 'event' } }))
+        .catch(err => {
+          if (err.response && err.response.status === 404) {
+            next({ name: '404', params: { resource: 'event' } })
+          } else {
+            next({ name: 'network-issue' })
+          }
+        })
     }
   },
   {
@@ -42,8 +49,13 @@ const routes = [
     props: true
   },
   {
+    path: '/network-issue',
+    name: 'network-issue',
+    component: NetworkIssue
+  },
+  {
     path: '*',
-    redirect: { name: '404', params: { reource: 'page' } }
+    redirect: { name: '404', params: { resource: 'page' } }
   }
 ]
 
